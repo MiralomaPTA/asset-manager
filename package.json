@@ -1,0 +1,41 @@
+{
+  "name": "asset-manager",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "test": "vitest run",
+    "typecheck": "next typegen && tsc --noEmit",
+    "seed": "node --env-file-if-exists=.env.local --import tsx scripts/seed-local.ts",
+    "import-items": "node --env-file-if-exists=.env.local --import tsx scripts/import-items.ts"
+  },
+  "dependencies": {
+    "@googleapis/drive": "^26.0.2",
+    "@googleapis/gmail": "^22.0.2",
+    "@googleapis/sheets": "^18.1.1",
+    "google-auth-library": "^11.3.0",
+    "heic2any": "^0.0.4",
+    "jose": "^6.2.12",
+    "next": "16.4.1",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "sharp": "^0.35.5",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@tailwindcss/turbopack": "^4",
+    "@types/node": "^24.19.2",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.4.1",
+    "playwright": "^1.64.1",
+    "tailwindcss": "^4",
+    "tsx": "^4.23.15",
+    "typescript": "^5",
+    "vitest": "^5.0.4"
+  }
+}
