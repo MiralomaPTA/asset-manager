@@ -1,5 +1,5 @@
 import type { ItemStatus } from "@/lib/availability";
-import { formatDay, formatMonthDay, type Day } from "@/lib/dates";
+import { formatDay, formatMonthDay, formatShortRange, type Day } from "@/lib/dates";
 import type { LineStatus, RequestStatus } from "@/lib/status";
 import { AlertIcon } from "@/components/Icons";
 
@@ -43,7 +43,7 @@ export function ItemStatusPill({ status }: { status: ItemStatus }) {
 
 /** Availability over a chosen range, for the "Free between" filter. */
 export function RangePill({ free, total, from, to }: { free: number; total: number; from: Day; to: Day }) {
-  const range = from === to ? formatMonthDay(from) : `${formatMonthDay(from)}–${formatMonthDay(to)}`;
+  const range = formatShortRange(from, to);
   if (free <= 0) return <Pill tone="warn">None free {range}</Pill>;
   return <Pill tone={free >= total ? "ok" : "info"}>{free >= total ? `All ${total} free ${range}` : `${free} of ${total} free ${range}`}</Pill>;
 }

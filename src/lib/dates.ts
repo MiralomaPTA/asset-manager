@@ -110,6 +110,13 @@ export function formatMonthDay(day: Day): string {
   return `${monthShort.format(date)} ${date.getUTCDate()}`;
 }
 
+/** "Dec 11–14", "Nov 30–Dec 2", or "Dec 11" for one day. */
+export function formatShortRange(from: Day, to: Day): string {
+  if (from === to) return formatMonthDay(from);
+  if (from.slice(0, 7) === to.slice(0, 7)) return `${formatMonthDay(from)}–${toUtc(to).getUTCDate()}`;
+  return `${formatMonthDay(from)}–${formatMonthDay(to)}`;
+}
+
 /** "December 2026" */
 export function formatMonth(day: Day): string {
   const date = toUtc(day);

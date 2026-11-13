@@ -34,7 +34,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
       { href: "/calendar", label: "Calendar" },
       { href: "/requests", label: "My requests" },
     ];
-    if (me.isAdmin || ownsAnything(core, me.user)) tabs.push({ href: "/review", label: "Review", badge: linesToDecide(core, me.user).length });
+    if (me.isAdmin || ownsAnything(core, me.user)) tabs.push({ href: "/review", label: "Review", badge: new Set(linesToDecide(core, me.user).map((l) => l.request_id)).size });
   }
   return (
     <html lang="en" className={`${figtree.variable} h-full antialiased`}>

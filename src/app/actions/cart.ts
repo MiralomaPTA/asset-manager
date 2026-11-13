@@ -20,9 +20,9 @@ export async function addToCart(formData: FormData): Promise<void> {
   redirect(safeNextPath(formData.get("back")) ?? `/items/${itemId}?added=1`);
 }
 
-export async function removeFromCart(formData: FormData): Promise<void> {
+/** Bound to an item ID by the remove button on the request page. */
+export async function removeFromCart(itemId: string): Promise<void> {
   await actionMe();
-  const itemId = String(formData.get("itemId") ?? "");
   await writeCart((await readCart()).filter((l) => l.itemId !== itemId));
   redirect("/request");
 }
