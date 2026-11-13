@@ -1,6 +1,6 @@
 # PTA Asset Manager — Product Spec
 
-Nov 12, 2026 · @Russ · Draft v0.2
+Nov 12, 2026 · @Russ · Draft v0.3
 
 ## Overview
 
@@ -212,9 +212,9 @@ The same shape as reimburse-me, with the daily job from meeting-manager:
 | Items | Item | id, name, description, tags (comma-separated), location, quantity, owner_email, contents (one part per line in the cell), photo_id, thumb_id, archived, created_at, updated_at |
 | Locations | Place | name, address, pickup_instructions, return_instructions |
 | Event types | Type | name, active |
-| Users | Person | email, name, phone, connection, status (pending / approved / denied), role (borrower / admin), requested_at, decided_at, decided_by, last_link_at |
+| Users | Person | email, name, phone, connection, status (pending / approved / denied), role (borrower / admin), requested_at, decided_at, decided_by, last_link_at, signed_in_at |
 | Requests | Request | id, created_at, borrower_email, event_type, event_name, pickup_date, return_date, borrower_note, confirmed_at (when the all-decided email went out) |
-| Lines | Request line | id, request_id, item_id, item_name, qty_requested, qty_approved, status, decided_by, decided_at, decision_note, picked_up_at, returned_at, returned_by, return_ok, return_notes, missing_parts, return_photo_id, problem_cleared_at, problem_cleared_by, problem_cleared_note |
+| Lines | Request line | id (request ID + number, e.g. R-0142-2), request_id, item_id, item_name, qty_requested, qty_approved, status, decided_by, decided_at, decision_note, owner_note, cancelled_at, cancelled_by, cancel_note, picked_up_at, returned_on, returned_at, returned_by, return_ok, return_notes, missing_parts, return_photo_id, problem_cleared_at, problem_cleared_by, problem_cleared_note |
 | Activity | Change | at, actor_email, action, request_id, line_id, item_id, detail |
 | Sends | Reminder sent | key, kind, sent_at, to, line_ids |
 
@@ -318,3 +318,15 @@ None.
 ## Changes since v0.1
 
 - Accepted every proposed default from the open questions and moved them into *Decisions*.
+
+## Changes since v0.2
+
+- **Calendar:** a timeline, two weeks on a phone and four on a wider screen, with this week's pickups and returns listed below it, as in the mockups. Replaces the month view and the phone list.
+- **Return all:** the request page can return every item still out in one form, with a section per item.
+- **Columns added while building:**
+  - Users: `signed_in_at`, which makes each sign-in link work once (as in reimburse-me).
+  - Lines:
+    - `owner_note`: the owner's one note to the borrower.
+    - `cancelled_at`, `cancelled_by`, `cancel_note`: who cancelled and why, kept apart from the decision.
+    - `returned_on`: the day it came back, which can be earlier than when it was marked.
+- **Sheet status:** the picked-up status is written as "Picked up" rather than "PickedUp". The app reads either.

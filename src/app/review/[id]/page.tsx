@@ -7,7 +7,7 @@ import { bookings, canDecide, deciderOf, lineQty, linesOf, linesToDecide, loadCo
 import { findUser, shortNameOf } from "@/server/users";
 import { daysBetween, dayOf, formatDay, formatShortRange } from "@/lib/dates";
 import { firstName, plural } from "@/lib/names";
-import { freeOver, pendingOverlaps } from "@/lib/availability";
+import { freeOver, holdingOverlaps, pendingOverlaps, type Booking } from "@/lib/availability";
 import { ActionForm } from "@/components/ActionForm";
 import { BackIcon, CheckIcon } from "@/components/Icons";
 import { ReviewForm, type DecideLine } from "@/components/ReviewForm";
@@ -33,6 +33,10 @@ export default async function DecidePage(props: PageProps<"/review/[id]">) {
   const items = new Map(core.items.map((i) => [i.id, i]));
   const range = formatShortRange(request.pickup_date, request.return_date);
 
+  const describe = (b: Booking, state: string) => {
+    const other = requests.get(b.requestId);
+    return `${other?.event_name ?? b.requestId} (${other ? shortNameOf(core.users, other.borrower_email) : "?"}), ${state}: ${b.qty} on ${formatShortRange(b.pickup, b.ret)}.`;
+  };
   const decide: DecideLine[] = mine
     .filter((l) => l.status === "Pending")
     .map((l) => {
@@ -49,10 +53,10 @@ export default async function DecidePage(props: PageProps<"/review/[id]">) {
         tightestDay: r.tightestDay,
         heldOnTightestDay: r.heldOnTightestDay,
         freeText: r.free <= 0 ? `None free ${range}` : `${r.free} of ${quantity} free ${range}`,
-        overlaps: pendingOverlaps(all, l.item_id, request.pickup_date, request.return_date, request.id).map((b) => {
-          const other = requests.get(b.requestId);
-          return `${other?.event_name ?? b.requestId} (${other ? shortNameOf(core.users, other.borrower_email) : "?"}), pending: ${b.qty} on ${formatShortRange(b.pickup, b.ret)}.`;
-        }),
+        overlaps: [
+          ...holdingOverlaps(all, l.item_id, request.pickup_date, request.return_date, today, request.id).map((b) => describe(b, b.status === "Picked up" ? "out" : "approved")),
+          ...pendingOverlaps(all, l.item_id, request.pickup_date, request.return_date, request.id).map((b) => describe(b, "pending")),
+        ],
         ownerName: decider && decider.email !== me.email ? shortNameOf(core.users, decider.email) : undefined,
       };
     });
