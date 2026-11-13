@@ -1,0 +1,131 @@
+@import "tailwindcss";
+
+@theme inline {
+  --font-sans: var(--font-figtree), ui-sans-serif, system-ui, sans-serif;
+}
+
+/* The palette from the mockups. */
+@theme {
+  --color-page: #f6f5f1;
+  --color-ink: #1b1d21;
+  --color-body: #3a3f48;
+  --color-muted: #5b606b;
+  --color-line: #e2e1dc;
+  --color-rule: #eeede8;
+  --color-field: #c9c8c1;
+  --color-chip: #d5d4ce;
+  --color-brand: #1f5fbf;
+  --color-brand-dark: #163f80;
+  --color-brand-ink: #1a4fa0;
+  --color-brand-soft: #e8effb;
+  --color-ok: #116149;
+  --color-ok-soft: #e2f3ec;
+  --color-warn: #8a4a00;
+  --color-warn-soft: #fcefd9;
+  --color-bad: #a12a1e;
+  --color-bad-soft: #fbe7e4;
+  --color-bad-faint: #fff6f5;
+}
+
+/* Unlayered rules would beat every utility class, so the defaults live in the base layer. */
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  body {
+    background: var(--color-page);
+    color: var(--color-ink);
+  }
+
+  a {
+    color: var(--color-brand);
+  }
+  a:hover {
+    color: var(--color-brand-dark);
+  }
+
+  input[type="checkbox"],
+  input[type="radio"] {
+    accent-color: var(--color-brand);
+    width: 22px;
+    height: 22px;
+    flex: none;
+  }
+}
+
+@utility card {
+  @apply rounded-[14px] border border-line bg-white;
+}
+@utility field {
+  @apply block h-12 w-full rounded-xl border border-field bg-white px-3 text-base text-ink focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand-soft;
+}
+@utility label {
+  @apply mb-1.5 block text-[15px] font-bold text-ink;
+}
+@utility hint {
+  @apply text-[13px] text-muted;
+}
+@utility btn {
+  @apply inline-flex h-12 items-center justify-center gap-2 rounded-xl px-5 text-base font-bold no-underline transition disabled:cursor-not-allowed disabled:opacity-50;
+}
+@utility btn-primary {
+  @apply btn bg-brand text-white hover:bg-brand-dark hover:text-white;
+}
+@utility btn-secondary {
+  @apply btn border border-field bg-white text-ink hover:bg-page hover:text-ink;
+}
+@utility btn-soft {
+  @apply btn bg-brand-soft text-brand-ink hover:bg-[#d9e5f8] hover:text-brand-ink;
+}
+@utility btn-danger {
+  @apply btn border border-bad bg-white text-bad hover:bg-bad-faint hover:text-bad;
+}
+@utility btn-small {
+  @apply h-10 px-3.5 text-[15px];
+}
+@utility pill {
+  @apply inline-flex items-center gap-1.5 rounded-full px-2.5 py-[3px] text-xs font-bold;
+}
+@utility chip {
+  @apply inline-flex h-11 flex-none items-center rounded-full border border-chip bg-white px-4 text-sm font-semibold text-ink no-underline hover:text-ink;
+}
+@utility chip-on {
+  @apply border-ink bg-ink text-white hover:text-white;
+}
+@utility notice {
+  @apply flex gap-2.5 rounded-xl px-3.5 py-3 text-sm leading-snug;
+}
+@utility h1 {
+  @apply text-[26px] leading-tight font-extrabold tracking-tight;
+}
+@utility h2 {
+  @apply text-[17px] font-extrabold;
+}
+
+/* A textarea using .field grows with its rows. */
+textarea.field {
+  @apply h-auto py-2.5 leading-snug;
+}
+
+/* Pending bookings: tentative, so drawn hatched. */
+.hatch {
+  background: repeating-linear-gradient(135deg, #fcefd9 0 5px, #f2d29e 5px 10px);
+}
+
+/* The how-it-works guide: plain prose with a little rhythm. */
+.guide :where(p, li) {
+  @apply leading-relaxed text-body;
+}
+.guide :where(ul) {
+  @apply list-disc space-y-2 pl-5;
+}
+.guide :where(ol) {
+  @apply list-decimal space-y-2 pl-5;
+}
+.guide :where(h2) {
+  @apply mt-6 mb-2 text-lg font-extrabold text-ink;
+}
+.guide :where(strong) {
+  @apply font-bold text-ink;
+}
